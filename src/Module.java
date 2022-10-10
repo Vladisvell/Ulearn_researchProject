@@ -6,4 +6,8 @@ public class Module {
     float homeworkMaxPoints;
     ArrayList<TaskInfo> practices = new ArrayList<>();
     ArrayList<TaskInfo> homeworks = new ArrayList<>();
+
+    TaskInfo getTaskByName(String taskName){
+        return new TaskInfo();
+    }
 }
