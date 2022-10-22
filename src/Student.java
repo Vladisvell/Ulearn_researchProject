@@ -12,6 +12,10 @@ public class Student extends Person{
 
     @Override
     public String toString() {
-        return super.toString() + "\nГруппа: " + group;
+        return "Студент " + super.toString() + "\nГруппа: " + group + "\n";
+    }
+
+    public String getFullInfo(){
+        return toString() + "\n".toString().join("\n", modules.stream().map(module -> module.toString()).toList());
     }
 }
