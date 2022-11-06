@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Module {
@@ -59,5 +60,17 @@ public class Module {
 
     public static Module createModule(){
         return new Module();
+    }
+
+    public static Module createModule(String categoryName, String[] studentEntries, HashMap<String, ArrayList<CSVUtils.recordID>> categories, String[] ideal){
+        Module module = new Module();
+        module.name = categoryName;
+        ArrayList<CSVUtils.recordID> category = (ArrayList<CSVUtils.recordID>) categories.get(categoryName);
+        for(CSVUtils.recordID record : category){
+            TaskInfo task = new TaskInfo(record.info, Float.valueOf(ideal[record.id]),Float.valueOf(studentEntries[record.id]));
+            module.tasks.add(task);
+        }
+        module.assignPoints();
+        return module;
     }
 }
