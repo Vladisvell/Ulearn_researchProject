@@ -6,5 +6,5 @@
 2. Создайте на компьютере файл Access_Credentials.txt и внесите туда следующие строки
   access_token=(введите сюда токен) 
   appid=(введите сюда ID приложения)
-3. Подставьте в path путь до файла Access_Credentials.txt
+3. Подставьте в path внутри VkTestingField полный путь до файла Access_Credentials.txt
 4. Можете делать запросы. 
