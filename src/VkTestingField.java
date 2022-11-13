@@ -7,6 +7,7 @@ import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
 import com.vk.api.sdk.objects.UserAuthResponse;
 import com.vk.api.sdk.objects.users.Fields;
+import com.vk.api.sdk.objects.users.responses.SearchResponse;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -25,13 +26,22 @@ public class VkTestingField {
 
         UserActor actor = new UserActor(appID, authKey);
 
-        var example = vk
-                .users()
-                .search(actor)
-                .fields(Fields.SEX, Fields.BDATE, Fields.HOME_TOWN, Fields.CITY)
-                .lang(Lang.RU)
-                .q("Владислав");
-        var kek = example.getParams();
+        SearchResponse example = null;
+        try {
+            example = vk
+                    .users()
+                    .search(actor)
+                    .fields(Fields.SEX, Fields.BDATE, Fields.HOME_TOWN, Fields.CITY)
+                    .lang(Lang.EN)
+                    .q("Годзилла")
+                    .count(1)
+                    .execute();
+        } catch (ApiException e) {
+            throw new RuntimeException(e);
+        } catch (ClientException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println(example.getItems());
         System.out.println("Ле экзампуле");
     }
 }

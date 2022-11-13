@@ -1,5 +1,6 @@
 public class Person {
     private final String name;
+    private Gender gender = Gender.UNDEFINED;
 
 
     public Person(String name){
@@ -17,8 +18,17 @@ public class Person {
         return String.format("%s", name);
     }
 
+    public void setGender(Gender newGender){
+        this.gender = newGender;
+    }
+
+    public Gender getGender(){
+        return this.gender;
+    }
+
     enum Gender{
-        Male,
-        Female
+        UNDEFINED,
+        FEMALE,
+        MALE,
     }
 }

@@ -8,10 +8,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 public class CSVUtils {
-
-
-    public static void read(){
-        System.out.println("Введите полное имя файла или локальное имя");
+    public static List<Student> read(){
+        //System.out.println("Введите полное имя файла или локальное имя");
         //Path path = Path.of(new Scanner(System.in).nextLine());
         Path path = Path.of("C:\\Users\\Vladislav\\Desktop\\basicprogramming_2.csv");
         List<String[]> data = null;
@@ -34,13 +32,14 @@ public class CSVUtils {
         }
         List<HashMap> maps = personsData.stream().map(person -> CSVUtils.map(courseHeader, person)).toList();
         HashMap studentData = maps.get(6);
-        System.out.println(studentData);
+        //System.out.println(studentData);
         HashMap<String, ArrayList<CSVUtils.recordID>> categories = new CSVUtils().mapList(categoryHeader, courseHeader);
         Student exampleStudent = Student.createStudent(personsData.get(4), categories, idealHeader);
         List<Student> students = personsData
                 .stream()
                 .map(student -> Student.createStudent(student, categories, idealHeader)).toList();
-        System.out.println(exampleStudent.getFullInfo());
+        return students;
+        //System.out.println(exampleStudent.getFullInfo());
     }
 
     public static HashMap map(String[] header, String[] values){

@@ -6,7 +6,13 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        VkTestingField test = new VkTestingField();
-        test.run();
+        //VkTestingField test = new VkTestingField();
+        //test.run();
+        VkApiRequests client = new VkApiRequests("C:\\Users\\Vladislav\\Desktop\\AccessCredentials.txt");
+        try {
+            client.requestGenders(CSVUtils.read());
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
