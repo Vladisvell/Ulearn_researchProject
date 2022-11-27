@@ -31,16 +31,16 @@ public class CSVUtils {
                 categoryHeader[i] = token;
         }
         List<HashMap> maps = personsData.stream().map(person -> CSVUtils.map(courseHeader, person)).toList();
-        HashMap studentData = maps.get(6);
+        //HashMap studentData = maps.get(6);
         HashMap<String, ArrayList<CSVUtils.recordID>> categories = new CSVUtils().mapList(categoryHeader, courseHeader);
-        Student exampleStudent = Student.createStudent(personsData.get(4), categories, idealHeader);
+        //Student exampleStudent = Student.createStudent(personsData.get(4), categories, idealHeader);
         List<Student> students = personsData
                 .stream()
                 .map(student -> Student.createStudent(student, categories, idealHeader)).toList();
         return students;
     }
 
-    public static HashMap map(String[] header, String[] values){
+    private static HashMap map(String[] header, String[] values){
         HashMap<String, String> map = new LinkedHashMap<String, String>();
         for(int i = 0; i < header.length; i++){
             map.put(header[i], values[i]);
@@ -48,7 +48,7 @@ public class CSVUtils {
         return map;
     }
 
-    public HashMap<String, ArrayList<recordID>> mapList(String[] header, String[] values){
+    private HashMap<String, ArrayList<recordID>> mapList(String[] header, String[] values){
         HashMap<String, ArrayList<recordID>> map = new LinkedHashMap<String, ArrayList<recordID>>();
         for(int i = 0; i < header.length; i++){
             if(!map.containsKey(header[i])){
