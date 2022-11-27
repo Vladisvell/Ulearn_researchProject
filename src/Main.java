@@ -9,10 +9,12 @@ public class Main {
         //VkTestingField test = new VkTestingField();
         //test.run();
         VkApiRequests client = new VkApiRequests("C:\\Users\\Vladislav\\Desktop\\AccessCredentials.txt");
+        List<Student> fulldata = null;
         try {
-            client.requestGenders(CSVUtils.read());
+            fulldata = client.requestGenders(CSVUtils.read());
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        System.out.println();
     }
 }

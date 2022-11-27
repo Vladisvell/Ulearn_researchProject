@@ -11,6 +11,10 @@ public class Student extends Person{
         this.group = group;
     }
 
+    public String getGroup() {
+        return group;
+    }
+
     @Override
     public String toString() {
         return "Студент " + super.toString() + "\nГруппа: " + group + "\n";

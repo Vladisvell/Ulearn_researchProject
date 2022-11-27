@@ -32,14 +32,12 @@ public class CSVUtils {
         }
         List<HashMap> maps = personsData.stream().map(person -> CSVUtils.map(courseHeader, person)).toList();
         HashMap studentData = maps.get(6);
-        //System.out.println(studentData);
         HashMap<String, ArrayList<CSVUtils.recordID>> categories = new CSVUtils().mapList(categoryHeader, courseHeader);
         Student exampleStudent = Student.createStudent(personsData.get(4), categories, idealHeader);
         List<Student> students = personsData
                 .stream()
                 .map(student -> Student.createStudent(student, categories, idealHeader)).toList();
         return students;
-        //System.out.println(exampleStudent.getFullInfo());
     }
 
     public static HashMap map(String[] header, String[] values){
@@ -78,5 +76,9 @@ public class CSVUtils {
         public String toString() {
             return String.format("id: %s info: %s",id,info);
         }
+    }
+
+    public static void main(String[] args){
+        var students = CSVUtils.read();
     }
 }
