@@ -12,7 +12,7 @@ public class CSVUtils {
         //System.out.println("Введите полное имя файла или локальное имя");
         //Path path = Path.of(new Scanner(System.in).nextLine());
         Path path = Path.of("C:\\Users\\Vladislav\\Desktop\\basicprogramming_2.csv");
-        List<String[]> data = null;
+        List<String[]> data;
         try {
             data = Files.readAllLines(path, StandardCharsets.UTF_8).stream().map(line -> line.split(";", -1)).toList();
         } catch (IOException e) {
@@ -30,14 +30,13 @@ public class CSVUtils {
             else
                 categoryHeader[i] = token;
         }
-        List<HashMap> maps = personsData.stream().map(person -> CSVUtils.map(courseHeader, person)).toList();
+        //List<HashMap> maps = personsData.stream().map(person -> CSVUtils.map(courseHeader, person)).toList();
         //HashMap studentData = maps.get(6);
         HashMap<String, ArrayList<CSVUtils.recordID>> categories = new CSVUtils().mapList(categoryHeader, courseHeader);
         //Student exampleStudent = Student.createStudent(personsData.get(4), categories, idealHeader);
-        List<Student> students = personsData
+        return personsData
                 .stream()
                 .map(student -> Student.createStudent(student, categories, idealHeader)).toList();
-        return students;
     }
 
     private static HashMap map(String[] header, String[] values){
