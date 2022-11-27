@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Student extends Person{
 
@@ -33,5 +35,21 @@ public class Student extends Person{
             }
         }
         return student;
+    }
+
+    public Module findModuleByName(String name){
+        for(Module module : modules){
+            if(name.equals(module.name))
+                return module;
+        }
+        throw new IllegalArgumentException("Такого модуля не существует!");
+    }
+
+    public boolean doesModuleExist(String moduleName){
+        return modules.stream().anyMatch(p -> p.name.equals(moduleName));
+    }
+
+    public List<String> getModulesNames(){
+        return modules.stream().map(x -> x.name).collect(Collectors.toList());
     }
 }

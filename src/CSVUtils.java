@@ -22,7 +22,7 @@ public class CSVUtils {
         String[] courseHeader = data.get(1);
         String[] idealHeader = data.get(2);
         idealHeader[0] = "Идеальное прохождение";
-        List<String[]> personsData = data.subList(3, data.size());
+        List<String[]> personsData = data.subList(2, data.size());
         String token = "";
         for(int i = 0; i < categoryHeader.length; i++){
             if(!categoryHeader[i].equals(""))
