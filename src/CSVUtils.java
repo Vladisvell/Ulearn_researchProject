@@ -11,12 +11,16 @@ public class CSVUtils {
     public static List<Student> read(){
         //System.out.println("Введите полное имя файла или локальное имя");
         //Path path = Path.of(new Scanner(System.in).nextLine());
-        Path path = Path.of("C:\\Users\\Vladislav\\Desktop\\basicprogramming_2.csv");
-        List<String[]> data;
+        Path path = Path.of("C:\\Users\\Vladislav\\Desktop\\basicprogramming_shadrinEdit.csv");
+        //Path path = Path.of("C:\\Users\\Vladislav\\Desktop\\basicprogramming_2.csv");
+        List<String[]> data = new ArrayList<>();
         try {
+            //data = Files.readAllLines(path, StandardCharsets.UTF_8).stream().map(line -> line.split(";", -1)).toList();
             data = Files.readAllLines(path, StandardCharsets.UTF_8).stream().map(line -> line.split(";", -1)).toList();
+            //var esse = Files.readAllLines(path, StandardCharsets.UTF_8);
+            System.out.println();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.fillInStackTrace());
         }
         String[] categoryHeader = data.get(0);
         String[] courseHeader = data.get(1);
