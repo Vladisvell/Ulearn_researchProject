@@ -12,5 +12,6 @@ public class Graphics_Shower {
         PracticesAndHomeworksHistogramm.main(null); //средний прогресс по упражнениям и домашним заданиям в отношении
                                                     //100%
         ModulesProgressHistogramm.main(null); //средние успеваемости по всем модулям
+        conn.CloseDB();
     }
 }

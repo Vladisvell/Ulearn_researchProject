@@ -15,10 +15,6 @@ public class conn {
 
     public static int[] studentsStats;
 
-
-    private static boolean iscreated = false;
-    private static boolean allcourseswritten = false;
-
     // --------ПОДКЛЮЧЕНИЕ К БАЗЕ ДАННЫХ--------
     public static void Conn() throws ClassNotFoundException, SQLException
     {
@@ -93,8 +89,6 @@ public class conn {
         }
     }
 
-
-
     private static void WritePeople() throws SQLException{
         statmt.execute("CREATE TABLE if not exists 'Люди' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'Имя' text, 'Пол');");
         for(Student student: studentList){
@@ -119,11 +113,6 @@ public class conn {
         pt.executeUpdate();
         pt.setString(1, "Мужской");
         pt.executeUpdate();
-    }
-
-    private static void WriteMax() throws SQLException{
-        statmt.execute("CREATE TABLE if not exists 'Максимумы за курс' ('id' INTEGER PRIMARY KEY AUTOINCREMENT," +
-                " 'courseID' int, 'Практики', 'ДЗ', 'Активности');");
     }
 
     private static void WriteGroups() throws SQLException{
@@ -194,41 +183,6 @@ public class conn {
     }
 
 
-
-    public static void GetContaining(String substring) throws SQLException {
-        resSet = statmt.executeQuery("SELECT * FROM Люди");
-
-        HashMap<Integer, String> container = new HashMap<>();
-
-        while(resSet.next())
-        {
-            int id = resSet.getInt("id");
-            String name = resSet.getString("Имя");
-            if(name.toLowerCase().contains(substring.toLowerCase()))
-                container.put(id, name);
-            //float group = resSet.getFloat("Practices");
-            //System.out.println( "ID = " + id );
-            //System.out.println( "Имя = " + name );
-            //System.out.println( "Practices = " + group);
-            //System.out.println();
-        }
-        for(var special: container.keySet()){
-            System.out.println("ID " + special);
-            System.out.println("Name " + container.get(special));
-        }
-
-        System.out.println("Таблица выведена");
-    }
-
-    public static void GetContainingFromInput() throws SQLException {
-        while(true){
-            System.out.println("Введите то, что хотите найти среди ЛЮДЕЙ");
-            Scanner scanner = new Scanner(System.in);
-            String substring = scanner.nextLine();
-            GetContaining(substring);
-        }
-    }
-
     public static int[] GetProgresses() throws SQLException {
         if(studentsStats != null)
             return studentsStats;
@@ -289,15 +243,17 @@ public class conn {
     public static float[] GetAveragesFromModule(String moduleName) throws SQLException{
         String rawStatmt = String.format("SELECT * FROM '%s'", moduleName);
         resSet = statmt.executeQuery(rawStatmt);
-        float[] stats = new float[]{0,0};
+        float[] stats = new float[]{0,0,0};
         int counter = 0;
         while (resSet.next()){
             counter++;
             stats[0] += resSet.getFloat("Практики");
             stats[1] += resSet.getFloat("ДЗ");
+            stats[2] += resSet.getFloat("Активности");
         }
         stats[0] = stats[0] / counter;
         stats[1] = stats[1] / counter;
+        stats[2] = stats[2] / counter;
         return stats;
     }
 
@@ -312,7 +268,7 @@ public class conn {
         for(var name: names){
             String moduleName = name;
             float[] averages = GetAveragesFromModule(moduleName);
-            float score = averages[0] + averages[1];
+            float score = averages[0] + averages[1] + averages[2];
             averagesFromAllModules.put(moduleName, score);
         }
         return averagesFromAllModules;
@@ -359,7 +315,7 @@ public class conn {
     {
         conn.close();
         statmt.close();
-        //resSet.close();
+        resSet.close();
 
         System.out.println("Соединения закрыты");
     }
