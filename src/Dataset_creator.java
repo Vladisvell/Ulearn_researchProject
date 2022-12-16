@@ -1,11 +1,9 @@
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.Dataset;
 import org.jfree.data.general.DatasetUtilities;
 
 import java.sql.SQLException;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -17,48 +15,6 @@ public class Dataset_creator
              {49.0, 72.0, 74.0, 68.0, 88.0, 54.0, 38.0, 23.0},
              {41.0, 33.0, 22.0, 34.0, 62.0, 32.0, 42.0, 34.0}
     };
-
-    public static CategoryDataset createDataset1()
-    {
-    	DefaultCategoryDataset dataset; 
-        // row keys...
-        final String series1 = "Чай"     ;
-        final String series2 = "Кофе"    ;
-        final String series3 = "Коктейль";
-
-        // column keys...
-        final String category1 = "Январь" ;
-        final String category2 = "Февраль";
-        final String category3 = "Март"   ;
-        final String category4 = "Апрель" ;
-        final String category5 = "Май"    ;
-
-        dataset = new DefaultCategoryDataset();
-
-        dataset.addValue(3.1, series1, category1);
-        dataset.addValue(2.2, series1, category2);
-        dataset.addValue(2.3, series1, category3);
-        dataset.addValue(3.4, series1, category4);
-        dataset.addValue(4.5, series1, category5);
-
-        dataset.addValue(7.2, series2, category1);
-        dataset.addValue(5.4, series2, category2);
-        dataset.addValue(6.2, series2, category3);
-        dataset.addValue(6.3, series2, category4);
-        dataset.addValue(7.5, series2, category5);
-
-        dataset.addValue(3.5, series3, category1);
-        dataset.addValue(2.8, series3, category2);
-        dataset.addValue(2.9, series3, category3);
-        dataset.addValue(3.3, series3, category4);
-        dataset.addValue(4.8, series3, category5);
-        
-        return dataset;        
-    }    
-
-    public static CategoryDataset createDataset2() { 
-        return DatasetUtilities.createCategoryDataset("Series ", "Factor ", data);
-    }
 
     public static CategoryDataset createDataset4() throws SQLException, ClassNotFoundException {
         DefaultCategoryDataset result = new DefaultCategoryDataset();
@@ -94,7 +50,6 @@ public class Dataset_creator
         conn.Conn();
         DefaultCategoryDataset result = new DefaultCategoryDataset();
 
-        //TODO: отсортировать это
         var averages = conn.GetAverageScores();
         LinkedHashMap<String, Float> linked = new LinkedHashMap<>();
         var entries = averages.entrySet().stream().filter(x -> x.getKey().contains("У2"))
@@ -126,14 +81,28 @@ public class Dataset_creator
     public static CategoryDataset createDataset8() throws SQLException, ClassNotFoundException{
         conn.Conn();
         DefaultCategoryDataset result = new DefaultCategoryDataset();
-        var averages = conn.GetAverages();
-        var ideal = conn.GetIdealScore();
+        var averages = conn.GetAveragesFromModule("За весь курс");
+        var ideal = conn.GetIdealScores();
         ideal[0] = ideal[0] / 100;
         ideal[1] = ideal[1] / 100;
         averages[0] = averages[0] / ideal[0];
         averages[1] = averages[1] / ideal[1];
         result.addValue(averages[0], "Практики", "Практики");
         result.addValue(averages[1], "Домашние задания", "Домашние задания");
+        return result;
+    }
+
+    public static CategoryDataset createDataset9() throws SQLException, ClassNotFoundException {
+        conn.Conn();
+        DefaultCategoryDataset result = new DefaultCategoryDataset();
+        var averages = conn.GetAveragesFromAllModules();
+        var ideals = conn.GetIdealFromAllModules();
+        for(String key: averages.keySet()){
+            var avg = averages.get(key);
+            var ideal = ideals.get(key);
+            var percentage = avg / (ideal / 100);
+            result.addValue(percentage, key, key);
+        }
         return result;
     }
 }

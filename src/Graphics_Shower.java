@@ -11,5 +11,6 @@ public class Graphics_Shower {
         StudentDifficultiesPie.main(null); //относительные успеваемости СПОРТА и КОМФОРТА
         PracticesAndHomeworksHistogramm.main(null); //средний прогресс по упражнениям и домашним заданиям в отношении
                                                     //100%
+        ModulesProgressHistogramm.main(null); //средние успеваемости по всем модулям
     }
 }

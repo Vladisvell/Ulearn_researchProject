@@ -5,7 +5,7 @@ import java.util.*;
 public class conn {
     private static Connection conn;
     private static Statement statmt;
-    private static ResultSet resSet;
+    private static ResultSet    resSet;
 
     private static List<Student> studentList;
     private static List<String> groups;
@@ -286,8 +286,9 @@ public class conn {
         return averages;
     }
 
-    public static float[] GetAverages() throws SQLException{
-        resSet = statmt.executeQuery("SELECT * FROM 'За весь курс'");
+    public static float[] GetAveragesFromModule(String moduleName) throws SQLException{
+        String rawStatmt = String.format("SELECT * FROM '%s'", moduleName);
+        resSet = statmt.executeQuery(rawStatmt);
         float[] stats = new float[]{0,0};
         int counter = 0;
         while (resSet.next()){
@@ -300,9 +301,43 @@ public class conn {
         return stats;
     }
 
-    public static float[] GetIdealScore() throws SQLException{
+    public static LinkedHashMap<String, Float> GetAveragesFromAllModules() throws SQLException{
+        resSet = statmt.executeQuery("Select * from Модули");
+        List<String> names = new ArrayList<>();
+        LinkedHashMap<String, Float> averagesFromAllModules = new LinkedHashMap<>();
+        while(resSet.next()){
+            names.add(resSet.getString("Название"));
+        }
+        var counter = 0;
+        for(var name: names){
+            String moduleName = name;
+            float[] averages = GetAveragesFromModule(moduleName);
+            float score = averages[0] + averages[1];
+            averagesFromAllModules.put(moduleName, score);
+        }
+        return averagesFromAllModules;
+    }
+
+    public static LinkedHashMap<String, Float> GetIdealFromAllModules() throws SQLException{
+        resSet = statmt.executeQuery("Select * from Модули");
+        List<String> names = new ArrayList<>();
+        LinkedHashMap<String, Float> averagesFromAllModules = new LinkedHashMap<>();
+        while(resSet.next()){
+            names.add(resSet.getString("Название"));
+        }
+        var counter = 0;
+        resSet = statmt.executeQuery("Select * from 'Информация о курсе'");
+        while(resSet.next()){
+            String moduleName = names.get(counter);
+            float score = resSet.getFloat("Практики") + resSet.getFloat("ДЗ");
+            averagesFromAllModules.put(moduleName, score);
+            counter++;
+        }
+        return averagesFromAllModules;
+    }
+
+    public static float[] GetIdealScores() throws SQLException{
         resSet = statmt.executeQuery("SELECT * FROM 'Информация о курсе'");
-        resSet.next();
         float[] stats = new float[]{0,0,0};
         stats[0] = resSet.getFloat("Практики");
         stats[1] = resSet.getFloat("ДЗ");
