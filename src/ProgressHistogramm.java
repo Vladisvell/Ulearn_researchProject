@@ -8,7 +8,6 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 
-import org.jfree.data.general.Dataset;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
@@ -20,26 +19,26 @@ import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 
-public class SecondBarChart extends ApplicationFrame
+public class ProgressHistogramm extends ApplicationFrame
 {
     private static final long serialVersionUID = 1L;
 
-    public SecondBarChart(final String title) throws SQLException, ClassNotFoundException {
+    public ProgressHistogramm(final String title) throws SQLException, ClassNotFoundException {
         super(title);
 
-        final CategoryDataset dataset    = Dataset_creator.createDataset5();
+        final CategoryDataset dataset    = Dataset_creator.createDataset4();
         final JFreeChart      chart      = createChart(dataset);
         final ChartPanel      chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new Dimension(800, 600));
+        chartPanel.setPreferredSize(new Dimension(500, 270));
         setContentPane(chartPanel);
 
     }
     private JFreeChart createChart(final CategoryDataset dataset) {
 
         final JFreeChart chart = ChartFactory.createBarChart3D(
-                "Статистика успеваемости студентов по группам",   // chart title
-                "Группы",                  // domain axis label
-                "Среднее число баллов",                  // range axis label
+                "Статистика успеваемости студентов",   // chart title
+                "",                  // domain axis label
+                "Число студентов",                  // range axis label
                 dataset,                  // data
                 PlotOrientation.VERTICAL, // orientation
                 true,                     // include legend
@@ -53,8 +52,8 @@ public class SecondBarChart extends ApplicationFrame
         // Настройка CategoryAxis
         CategoryAxis axis = plot.getDomainAxis();
         // Скрытие осевых линий и меток делений
-        axis.setAxisLineVisible (true);    // осевая линия
-        axis.setTickMarksVisible(true);    // метки деления оси
+        axis.setAxisLineVisible (false);    // осевая линия
+        axis.setTickMarksVisible(false);    // метки деления оси
         // Наклон меток значений
         axis.setCategoryLabelPositions(
                 CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 6.0)
@@ -69,7 +68,7 @@ public class SecondBarChart extends ApplicationFrame
     }
 
     public static void main(final String[] args) throws SQLException, ClassNotFoundException {
-        final SecondBarChart demo = new SecondBarChart("3D статистика успеваемости по группам");
+        final ProgressHistogramm demo = new ProgressHistogramm("3D статистика успеваемости студентов");
         demo.pack();
         RefineryUtilities.centerFrameOnScreen(demo);
         demo.setVisible(true);

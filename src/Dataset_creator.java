@@ -111,7 +111,6 @@ public class Dataset_creator
         conn.Conn();
         DefaultCategoryDataset result = new DefaultCategoryDataset();
 
-        //TODO: отсортировать это
         var averages = conn.GetAverageScores();
         LinkedHashMap<String, Float> linked = new LinkedHashMap<>();
         var entries = averages.entrySet().stream().filter(x -> x.getKey().contains("У1"))
@@ -121,6 +120,20 @@ public class Dataset_creator
             //result.addValue(entry.getValue(), entry.getKey(), entry.getKey());
             result.addValue(entry.getValue(), entry.getKey(), "");
         }
+        return result;
+    }
+
+    public static CategoryDataset createDataset8() throws SQLException, ClassNotFoundException{
+        conn.Conn();
+        DefaultCategoryDataset result = new DefaultCategoryDataset();
+        var averages = conn.GetAverages();
+        var ideal = conn.GetIdealScore();
+        ideal[0] = ideal[0] / 100;
+        ideal[1] = ideal[1] / 100;
+        averages[0] = averages[0] / ideal[0];
+        averages[1] = averages[1] / ideal[1];
+        result.addValue(averages[0], "Практики", "Практики");
+        result.addValue(averages[1], "Домашние задания", "Домашние задания");
         return result;
     }
 }

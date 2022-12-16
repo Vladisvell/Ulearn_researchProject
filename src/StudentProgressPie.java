@@ -13,7 +13,7 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.sql.SQLException;
 
-public class SecondPieChart extends ApplicationFrame {
+public class StudentProgressPie extends ApplicationFrame {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,26 +26,28 @@ public class SecondPieChart extends ApplicationFrame {
         ChartFactory.setChartTheme(new StandardChartTheme("JFree/Shadow", true));
     }
 
-    public SecondPieChart(String title) throws SQLException {
+    public StudentProgressPie(String title) {
         super(title);
         setContentPane(createDemoPanel());
     }
 
-    private PieDataset createDataset() throws SQLException {
+    private PieDataset createDataset() {
         DefaultPieDataset dataset = new DefaultPieDataset();
-        var sexes = conn.GetSexes();
-        dataset.setValue("Женский" , sexes[0]);
-        dataset.setValue("Мужской", sexes[1]);
-        dataset.setValue("Боевой вертолёт", sexes[2]);
+        var data = conn.studentsStats;
+        dataset.setValue("0-20%" , data[0]);
+        dataset.setValue("20-40%", data[1]);
+        dataset.setValue("40%-60%", data[2]);
+        dataset.setValue("60%-80%", data[3]);
+        dataset.setValue("80-100%", data[4]);
         return dataset;
     }
 
     private JFreeChart createChart(PieDataset dataset)
     {
         JFreeChart chart = ChartFactory.createPieChart(
-                "Соотношение полов",  // chart title
+                "Успеваемость студентов",  // chart title
                 dataset,             // data
-                true,               // legend
+                true,               // no legend
                 true,                // tooltips
                 false                // no URL generation
         );
@@ -60,7 +62,7 @@ public class SecondPieChart extends ApplicationFrame {
         t.setFont(new Font("Arial", Font.BOLD, 26));
 
         // Определение подзаголовка
-        TextTitle source = new TextTitle("Соотношение полов",
+        TextTitle source = new TextTitle("Успеваемость студентов по курсу",
                 new Font("Courier New", Font.PLAIN, 14));
         source.setPaint(Color.WHITE);
         source.setPosition(RectangleEdge.BOTTOM);
@@ -72,10 +74,22 @@ public class SecondPieChart extends ApplicationFrame {
         plot.setInteriorGap(0.1);
         plot.setOutlineVisible(false);
 
+        RadialGradientPaint rgpBlue  ;
+        RadialGradientPaint rgpRed   ;
+        RadialGradientPaint rgpGreen ;
+        RadialGradientPaint rgpYellow;
+
+        rgpBlue   = createGradientPaint(colors[0], Color.BLUE  );
+        rgpRed    = createGradientPaint(colors[1], Color.RED   );
+        rgpGreen  = createGradientPaint(colors[2], Color.GREEN );
+        rgpYellow = createGradientPaint(colors[3], Color.YELLOW);
+
         // Определение секций круговой диаграммы
-        plot.setSectionPaint("Женский" , Color.pink);
-        plot.setSectionPaint("Мужской", Color.blue);
-        plot.setSectionPaint("Боевой вертолёт", Color.black );
+        plot.setSectionPaint("0-20%" , rgpBlue  );
+        plot.setSectionPaint("20-40%", rgpRed   );
+        plot.setSectionPaint("40%-60%"  , rgpGreen );
+        plot.setSectionPaint("60%-80%", rgpYellow);
+        plot.setSectionPaint("80%-100%", rgpRed);
         plot.setBaseSectionOutlinePaint(Color.WHITE);
         plot.setSectionOutlinesVisible(true);
         plot.setBaseSectionOutlineStroke(new BasicStroke(2.0f));
@@ -99,7 +113,7 @@ public class SecondPieChart extends ApplicationFrame {
                 new Color[] {c1, c2});
     }
 
-    public JPanel createDemoPanel() throws SQLException {
+    public JPanel createDemoPanel() {
         JFreeChart chart = createChart(createDataset());
         chart.setPadding(new RectangleInsets(4, 8, 2, 2));
         ChartPanel panel = new ChartPanel(chart);
@@ -109,9 +123,17 @@ public class SecondPieChart extends ApplicationFrame {
         return panel;
     }
 
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        conn.Conn();
-        SecondPieChart demo = new SecondPieChart("Соотношения полов присутствующих на курсе");
+    public static void main(String[] args)
+    {
+        try {
+            DatabaseLauncher.main(null);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        StudentProgressPie demo = new StudentProgressPie("Успеваемость студентов относительно максимума");
         demo.pack();
         RefineryUtilities.centerFrameOnScreen(demo);
         demo.setVisible(true);

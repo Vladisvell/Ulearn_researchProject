@@ -286,6 +286,30 @@ public class conn {
         return averages;
     }
 
+    public static float[] GetAverages() throws SQLException{
+        resSet = statmt.executeQuery("SELECT * FROM 'За весь курс'");
+        float[] stats = new float[]{0,0};
+        int counter = 0;
+        while (resSet.next()){
+            counter++;
+            stats[0] += resSet.getFloat("Практики");
+            stats[1] += resSet.getFloat("ДЗ");
+        }
+        stats[0] = stats[0] / counter;
+        stats[1] = stats[1] / counter;
+        return stats;
+    }
+
+    public static float[] GetIdealScore() throws SQLException{
+        resSet = statmt.executeQuery("SELECT * FROM 'Информация о курсе'");
+        resSet.next();
+        float[] stats = new float[]{0,0,0};
+        stats[0] = resSet.getFloat("Практики");
+        stats[1] = resSet.getFloat("ДЗ");
+        stats[2] = resSet.getFloat("Активности");
+        return stats;
+    }
+
     public static int[] GetSexes() throws SQLException{
         resSet = statmt.executeQuery("SELECT * FROM 'Люди'");
         int[] sexes = new int[]{0,0,0};

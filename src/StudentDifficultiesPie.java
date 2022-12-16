@@ -12,11 +12,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.sql.SQLException;
-import java.util.Collections;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ThirdPieChart extends ApplicationFrame {
+public class StudentDifficultiesPie extends ApplicationFrame {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,7 +28,7 @@ public class ThirdPieChart extends ApplicationFrame {
         ChartFactory.setChartTheme(new StandardChartTheme("JFree/Shadow", true));
     }
 
-    public ThirdPieChart(String title) throws SQLException, ClassNotFoundException {
+    public StudentDifficultiesPie(String title) throws SQLException, ClassNotFoundException {
         super(title);
         setContentPane(createDemoPanel());
     }
@@ -126,7 +125,7 @@ public class ThirdPieChart extends ApplicationFrame {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         conn.Conn();
-        ThirdPieChart demo = new ThirdPieChart("Соотношение средних баллов учащихся на СПОРТе и КОМФОРТе");
+        StudentDifficultiesPie demo = new StudentDifficultiesPie("Соотношение средних баллов учащихся на СПОРТе и КОМФОРТе");
         demo.pack();
         RefineryUtilities.centerFrameOnScreen(demo);
         demo.setVisible(true);

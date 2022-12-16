@@ -2,12 +2,14 @@ import java.sql.SQLException;
 
 public class Graphics_Shower {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        //FirstBarChart.main(null); //гистограмма успеваемости студентов - deprecated
-        //SecondBarChart.main(null); //гистограмма успеваемости по группам - deprecated.
-        //ThirdBarChart.main(null); //успеваемость по группам СПОРТ - deprecated
-        //FourthBarChart.main(null); //успеваемость по группам КОМФОРТ - deprecated
-        FirstPieChart.main(null); //пирог успеваемости студентов по процентам
-        SecondPieChart.main(null); //соотношение полов
-        ThirdPieChart.main(null); //относительные успеваемости СПОРТА и КОМФОРТА
+        //ProgressHistogramm.main(null); //гистограмма успеваемости студентов - deprecated
+        //Groups_ProgressHistogramm.main(null); //гистограмма успеваемости по группам - deprecated.
+        //SportProgressHistogramm.main(null); //успеваемость по группам СПОРТ - deprecated
+        //ComfortProgressHistogramm.main(null); //успеваемость по группам КОМФОРТ - deprecated
+        StudentProgressPie.main(null); //пирог успеваемости студентов по процентам
+        StudentGenderPie.main(null); //соотношение полов
+        StudentDifficultiesPie.main(null); //относительные успеваемости СПОРТА и КОМФОРТА
+        PracticesAndHomeworksHistogramm.main(null); //средний прогресс по упражнениям и домашним заданиям в отношении
+                                                    //100%
     }
 }

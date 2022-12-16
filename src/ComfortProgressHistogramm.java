@@ -8,7 +8,6 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 
-import org.jfree.data.general.Dataset;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
@@ -20,11 +19,11 @@ import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 
-public class FourthBarChart extends ApplicationFrame
+public class ComfortProgressHistogramm extends ApplicationFrame
 {
     private static final long serialVersionUID = 1L;
 
-    public FourthBarChart(final String title) throws SQLException, ClassNotFoundException {
+    public ComfortProgressHistogramm(final String title) throws SQLException, ClassNotFoundException {
         super(title);
 
         final CategoryDataset dataset    = Dataset_creator.createDataset7();
@@ -69,7 +68,7 @@ public class FourthBarChart extends ApplicationFrame
     }
 
     public static void main(final String[] args) throws SQLException, ClassNotFoundException {
-        final FourthBarChart demo = new FourthBarChart("3D статистика успеваемости по группам КОМФОРТ");
+        final ComfortProgressHistogramm demo = new ComfortProgressHistogramm("3D статистика успеваемости по группам КОМФОРТ");
         demo.pack();
         RefineryUtilities.centerFrameOnScreen(demo);
         demo.setVisible(true);
