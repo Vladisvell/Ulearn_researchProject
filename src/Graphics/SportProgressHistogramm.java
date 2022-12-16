@@ -1,3 +1,5 @@
+package Graphics;
+
 import java.awt.*;
 import java.sql.SQLException;
 
@@ -19,26 +21,26 @@ import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 
-public class ProgressHistogramm extends ApplicationFrame
+public class SportProgressHistogramm extends ApplicationFrame
 {
     private static final long serialVersionUID = 1L;
 
-    public ProgressHistogramm(final String title) throws SQLException, ClassNotFoundException {
+    public SportProgressHistogramm(final String title) throws SQLException, ClassNotFoundException {
         super(title);
 
-        final CategoryDataset dataset    = Dataset_creator.createDataset4();
+        final CategoryDataset dataset    = Dataset_creator.createDataset6();
         final JFreeChart      chart      = createChart(dataset);
         final ChartPanel      chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new Dimension(500, 270));
+        chartPanel.setPreferredSize(new Dimension(800, 600));
         setContentPane(chartPanel);
 
     }
     private JFreeChart createChart(final CategoryDataset dataset) {
 
         final JFreeChart chart = ChartFactory.createBarChart3D(
-                "Статистика успеваемости студентов",   // chart title
-                "",                  // domain axis label
-                "Число студентов",                  // range axis label
+                "Статистика успеваемости студентов по группам СПОРТ",   // chart title
+                "Группы",                  // domain axis label
+                "Среднее число баллов",   // range axis label
                 dataset,                  // data
                 PlotOrientation.VERTICAL, // orientation
                 true,                     // include legend
@@ -52,8 +54,8 @@ public class ProgressHistogramm extends ApplicationFrame
         // Настройка CategoryAxis
         CategoryAxis axis = plot.getDomainAxis();
         // Скрытие осевых линий и меток делений
-        axis.setAxisLineVisible (false);    // осевая линия
-        axis.setTickMarksVisible(false);    // метки деления оси
+        axis.setAxisLineVisible (true);    // осевая линия
+        axis.setTickMarksVisible(true);    // метки деления оси
         // Наклон меток значений
         axis.setCategoryLabelPositions(
                 CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 6.0)
@@ -68,7 +70,7 @@ public class ProgressHistogramm extends ApplicationFrame
     }
 
     public static void main(final String[] args) throws SQLException, ClassNotFoundException {
-        final ProgressHistogramm demo = new ProgressHistogramm("3D статистика успеваемости студентов");
+        final SportProgressHistogramm demo = new SportProgressHistogramm("3D статистика успеваемости по группам СПОРТ");
         demo.pack();
         RefineryUtilities.centerFrameOnScreen(demo);
         demo.setVisible(true);

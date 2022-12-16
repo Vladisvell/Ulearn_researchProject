@@ -1,3 +1,5 @@
+package Graphics;
+
 import java.awt.*;
 import java.sql.SQLException;
 
@@ -19,14 +21,14 @@ import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 
-public class PracticesAndHomeworksHistogramm extends ApplicationFrame
+public class ModulesProgressHistogramm extends ApplicationFrame
 {
     private static final long serialVersionUID = 1L;
 
-    public PracticesAndHomeworksHistogramm(final String title) throws SQLException, ClassNotFoundException {
+    public ModulesProgressHistogramm(final String title) throws SQLException, ClassNotFoundException {
         super(title);
 
-        final CategoryDataset dataset    = Dataset_creator.createDataset8();
+        final CategoryDataset dataset    = Dataset_creator.createDataset9();
         final JFreeChart      chart      = createChart(dataset);
         final ChartPanel      chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new Dimension(500, 270));
@@ -36,11 +38,11 @@ public class PracticesAndHomeworksHistogramm extends ApplicationFrame
     private JFreeChart createChart(final CategoryDataset dataset) {
 
         final JFreeChart chart = ChartFactory.createBarChart3D(
-                "Выполненность практик и домашних заданий",   // chart title
+                "Средняя выполненность практик (в процентах)",   // chart title
                 "",                  // domain axis label
                 "Процент завершенности",                  // range axis label
                 dataset,                  // data
-                PlotOrientation.VERTICAL, // orientation
+                PlotOrientation.HORIZONTAL, // orientation
                 true,                     // include legend
                 true,                     // tooltips
                 false                     // urls
@@ -55,20 +57,21 @@ public class PracticesAndHomeworksHistogramm extends ApplicationFrame
         axis.setAxisLineVisible (false);    // осевая линия
         axis.setTickMarksVisible(false);    // метки деления оси
         // Наклон меток значений
-        //axis.setCategoryLabelPositions(
-        //        CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 6)
-        //);
+        axis.setCategoryLabelPositions(
+                CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 6)
+        );
 
         CategoryItemRenderer renderer = plot.getRenderer();
         renderer.setBaseItemLabelsVisible(true);
         BarRenderer r = (BarRenderer) renderer;
-        r.setMaximumBarWidth(0.2);
+        r.setMaximumBarWidth(0.5);
+        r.setMinimumBarLength(0.5);
 
         return chart;
     }
 
     public static void main(final String[] args) throws SQLException, ClassNotFoundException {
-        final PracticesAndHomeworksHistogramm demo = new PracticesAndHomeworksHistogramm("Выполненность практик и домашних заданий");
+        final ModulesProgressHistogramm demo = new ModulesProgressHistogramm("Средняя выполненность практик (в процентах)");
         demo.pack();
         RefineryUtilities.centerFrameOnScreen(demo);
         demo.setVisible(true);

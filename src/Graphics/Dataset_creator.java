@@ -1,3 +1,8 @@
+package Graphics;
+
+import DefaultPackage.DatabaseLauncher;
+import DefaultPackage.conn;
+import DefaultPackage.*;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DatasetUtilities;

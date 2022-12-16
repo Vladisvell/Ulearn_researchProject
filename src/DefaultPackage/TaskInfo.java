@@ -1,3 +1,5 @@
+package DefaultPackage;
+
 public class TaskInfo {
     String taskName;
     float maxPoints;

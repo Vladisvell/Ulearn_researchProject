@@ -1,3 +1,7 @@
+package Graphics;
+
+import DefaultPackage.DatabaseLauncher;
+import DefaultPackage.conn;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -12,10 +16,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.sql.SQLException;
-import java.util.Map;
-import java.util.stream.Collectors;
 
-public class StudentDifficultiesPie extends ApplicationFrame {
+public class StudentProgressPie extends ApplicationFrame {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,39 +30,28 @@ public class StudentDifficultiesPie extends ApplicationFrame {
         ChartFactory.setChartTheme(new StandardChartTheme("JFree/Shadow", true));
     }
 
-    public StudentDifficultiesPie(String title) throws SQLException, ClassNotFoundException {
+    public StudentProgressPie(String title) {
         super(title);
         setContentPane(createDemoPanel());
     }
 
-    private PieDataset createDataset() throws SQLException, ClassNotFoundException {
+    private PieDataset createDataset() {
         DefaultPieDataset dataset = new DefaultPieDataset();
-        conn.Conn();
-        var averages = conn.GetAverageScores();
-        var comfort = averages.entrySet().stream().filter(x -> x.getKey().contains("У1")
-                        && !x.getValue().isNaN())
-                .sorted(Map.Entry.comparingByValue()).collect(Collectors.toList());
-        var sport = averages.entrySet().stream().filter(x -> x.getKey().contains("У2")
-                        && !x.getValue().isNaN())
-                .sorted(Map.Entry.comparingByValue()).collect(Collectors.toList());
-        var summary = comfort.stream().map(x -> x.getValue())
-                .reduce(0f, (a,b) -> (a+b));
-        var averageComfort = comfort.stream().map(x -> x.getValue())
-                .reduce(0f, (a,b) -> (a+b)) / comfort.stream().count();
-        var averageSport = sport.stream().map(x -> x.getValue())
-                .reduce(0f, (a,b) -> (a+b)) / sport.stream().count();
-        dataset.setValue("СПОРТ", averageSport);
-        dataset.setValue("КОМФОРТ", averageComfort);
-
+        var data = conn.studentsStats;
+        dataset.setValue("0-20%" , data[0]);
+        dataset.setValue("20-40%", data[1]);
+        dataset.setValue("40%-60%", data[2]);
+        dataset.setValue("60%-80%", data[3]);
+        dataset.setValue("80-100%", data[4]);
         return dataset;
     }
 
     private JFreeChart createChart(PieDataset dataset)
     {
         JFreeChart chart = ChartFactory.createPieChart(
-                "Соотношение средних баллов учащихся на СПОРТе и КОМФОРТе",  // chart title
+                "Успеваемость студентов",  // chart title
                 dataset,             // data
-                true,               // legend
+                true,               // no legend
                 true,                // tooltips
                 false                // no URL generation
         );
@@ -75,7 +66,7 @@ public class StudentDifficultiesPie extends ApplicationFrame {
         t.setFont(new Font("Arial", Font.BOLD, 26));
 
         // Определение подзаголовка
-        TextTitle source = new TextTitle("Соотношение средних баллов учащихся на СПОРТе и КОМФОРТе",
+        TextTitle source = new TextTitle("Успеваемость студентов по курсу",
                 new Font("Courier New", Font.PLAIN, 14));
         source.setPaint(Color.WHITE);
         source.setPosition(RectangleEdge.BOTTOM);
@@ -87,9 +78,22 @@ public class StudentDifficultiesPie extends ApplicationFrame {
         plot.setInteriorGap(0.1);
         plot.setOutlineVisible(false);
 
+        RadialGradientPaint rgpBlue  ;
+        RadialGradientPaint rgpRed   ;
+        RadialGradientPaint rgpGreen ;
+        RadialGradientPaint rgpYellow;
+
+        rgpBlue   = createGradientPaint(colors[0], Color.BLUE  );
+        rgpRed    = createGradientPaint(colors[1], Color.RED   );
+        rgpGreen  = createGradientPaint(colors[2], Color.GREEN );
+        rgpYellow = createGradientPaint(colors[3], Color.YELLOW);
+
         // Определение секций круговой диаграммы
-        plot.setSectionPaint("СПОРТ" , Color.red);
-        plot.setSectionPaint("КОМФОРТ", Color.blue);
+        plot.setSectionPaint("0-20%" , rgpBlue  );
+        plot.setSectionPaint("20-40%", rgpRed   );
+        plot.setSectionPaint("40%-60%"  , rgpGreen );
+        plot.setSectionPaint("60%-80%", rgpYellow);
+        plot.setSectionPaint("80%-100%", rgpRed);
         plot.setBaseSectionOutlinePaint(Color.WHITE);
         plot.setSectionOutlinesVisible(true);
         plot.setBaseSectionOutlineStroke(new BasicStroke(2.0f));
@@ -113,7 +117,7 @@ public class StudentDifficultiesPie extends ApplicationFrame {
                 new Color[] {c1, c2});
     }
 
-    public JPanel createDemoPanel() throws SQLException, ClassNotFoundException {
+    public JPanel createDemoPanel() {
         JFreeChart chart = createChart(createDataset());
         chart.setPadding(new RectangleInsets(4, 8, 2, 2));
         ChartPanel panel = new ChartPanel(chart);
@@ -125,7 +129,7 @@ public class StudentDifficultiesPie extends ApplicationFrame {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         conn.Conn();
-        StudentDifficultiesPie demo = new StudentDifficultiesPie("Соотношение средних баллов учащихся на СПОРТе и КОМФОРТе");
+        StudentProgressPie demo = new StudentProgressPie("Успеваемость студентов относительно максимума");
         demo.pack();
         RefineryUtilities.centerFrameOnScreen(demo);
         demo.setVisible(true);

@@ -1,3 +1,7 @@
+package DefaultPackage;
+
+import CSVUtilities.CSVUtils;
+
 import java.sql.*;
 import java.util.*;
 
@@ -58,9 +62,9 @@ public class conn {
         var modules = idealWalkthrough.modules;
         for(int i = 1; i < modules.size()+1; i++){
             pt.setInt(1, i);
-            pt.setFloat(2, modules.get(i-1).maxPracticePoints);
-            pt.setFloat(3, modules.get(i-1).maxHomeworkPoints);
-            pt.setFloat(4, modules.get(i-1).maxActivitiesPoints);
+            pt.setFloat(2, modules.get(i-1).getMaxPracticePoints());
+            pt.setFloat(3, modules.get(i-1).getMaxHomeworkPoints());
+            pt.setFloat(4, modules.get(i-1).getMaxActivitiesPoints());
             pt.executeUpdate();
         }
     }
@@ -72,7 +76,7 @@ public class conn {
         PreparedStatement pt = conn.prepareStatement(rawStatement);
         var modules = idealWalkthrough.modules;
         for (int i = 1; i < modules.size()+1; i++) {
-            pt.setString(1, modules.get(i - 1).name);
+            pt.setString(1, modules.get(i - 1).getName());
             pt.executeUpdate();
         }
     }
@@ -168,9 +172,9 @@ public class conn {
             String raw = String.format("INSERT INTO '%s' ('Практики','ДЗ','Активности') VALUES (?,?,?)",moduleName);
             PreparedStatement pt = conn.prepareStatement(raw);
             //pt.setString(1,moduleName);
-            pt.setFloat(1, module.practicePoints);
-            pt.setFloat(2, module.homeworkPoints);
-            pt.setFloat(3, module.activitiesPoints);
+            pt.setFloat(1, module.getPracticePoints());
+            pt.setFloat(2, module.getHomeworkPoints());
+            pt.setFloat(3, module.getActivitiesPoints());
             pt.executeUpdate();
         }
     }

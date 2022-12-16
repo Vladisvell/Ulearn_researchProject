@@ -1,3 +1,5 @@
+package Graphics;
+
 import java.awt.*;
 import java.sql.SQLException;
 
@@ -19,14 +21,14 @@ import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 
-public class SportProgressHistogramm extends ApplicationFrame
+public class Groups_ProgressHistogramm extends ApplicationFrame
 {
     private static final long serialVersionUID = 1L;
 
-    public SportProgressHistogramm(final String title) throws SQLException, ClassNotFoundException {
+    public Groups_ProgressHistogramm(final String title) throws SQLException, ClassNotFoundException {
         super(title);
 
-        final CategoryDataset dataset    = Dataset_creator.createDataset6();
+        final CategoryDataset dataset    = Dataset_creator.createDataset5();
         final JFreeChart      chart      = createChart(dataset);
         final ChartPanel      chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new Dimension(800, 600));
@@ -36,9 +38,9 @@ public class SportProgressHistogramm extends ApplicationFrame
     private JFreeChart createChart(final CategoryDataset dataset) {
 
         final JFreeChart chart = ChartFactory.createBarChart3D(
-                "Статистика успеваемости студентов по группам СПОРТ",   // chart title
+                "Статистика успеваемости студентов по группам",   // chart title
                 "Группы",                  // domain axis label
-                "Среднее число баллов",   // range axis label
+                "Среднее число баллов",                  // range axis label
                 dataset,                  // data
                 PlotOrientation.VERTICAL, // orientation
                 true,                     // include legend
@@ -68,7 +70,7 @@ public class SportProgressHistogramm extends ApplicationFrame
     }
 
     public static void main(final String[] args) throws SQLException, ClassNotFoundException {
-        final SportProgressHistogramm demo = new SportProgressHistogramm("3D статистика успеваемости по группам СПОРТ");
+        final Groups_ProgressHistogramm demo = new Groups_ProgressHistogramm("3D статистика успеваемости по группам");
         demo.pack();
         RefineryUtilities.centerFrameOnScreen(demo);
         demo.setVisible(true);

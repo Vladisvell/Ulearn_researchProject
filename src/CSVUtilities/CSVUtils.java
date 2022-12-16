@@ -1,3 +1,8 @@
+package CSVUtilities;
+
+import DefaultPackage.Student;
+import DefaultPackage.*;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -34,10 +39,10 @@ public class CSVUtils {
             else
                 categoryHeader[i] = token;
         }
-        //List<HashMap> maps = personsData.stream().map(person -> CSVUtils.map(courseHeader, person)).toList();
+        //List<HashMap> maps = personsData.stream().map(person -> CSVUtilities.CSVUtils.map(courseHeader, person)).toList();
         //HashMap studentData = maps.get(6);
         HashMap<String, ArrayList<CSVUtils.recordID>> categories = new CSVUtils().mapList(categoryHeader, courseHeader);
-        //Student exampleStudent = Student.createStudent(personsData.get(4), categories, idealHeader);
+        //DefaultPackage.Student exampleStudent = DefaultPackage.Student.createStudent(personsData.get(4), categories, idealHeader);
         return personsData
                 .stream()
                 .map(student -> Student.createStudent(student, categories, idealHeader)).toList();
@@ -78,6 +83,14 @@ public class CSVUtils {
         @Override
         public String toString() {
             return String.format("id: %s info: %s",id,info);
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public String getInfo() {
+            return info;
         }
     }
 

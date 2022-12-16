@@ -1,3 +1,6 @@
+package Graphics;
+
+import DefaultPackage.conn;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -12,8 +15,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.sql.SQLException;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-public class StudentGenderPie extends ApplicationFrame {
+public class StudentDifficultiesPie extends ApplicationFrame {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,24 +31,37 @@ public class StudentGenderPie extends ApplicationFrame {
         ChartFactory.setChartTheme(new StandardChartTheme("JFree/Shadow", true));
     }
 
-    public StudentGenderPie(String title) throws SQLException {
+    public StudentDifficultiesPie(String title) throws SQLException, ClassNotFoundException {
         super(title);
         setContentPane(createDemoPanel());
     }
 
-    private PieDataset createDataset() throws SQLException {
+    private PieDataset createDataset() throws SQLException, ClassNotFoundException {
         DefaultPieDataset dataset = new DefaultPieDataset();
-        var sexes = conn.GetSexes();
-        dataset.setValue("Женский" , sexes[0]);
-        dataset.setValue("Мужской", sexes[1]);
-        dataset.setValue("Боевой вертолёт", sexes[2]);
+        conn.Conn();
+        var averages = conn.GetAverageScores();
+        var comfort = averages.entrySet().stream().filter(x -> x.getKey().contains("У1")
+                        && !x.getValue().isNaN())
+                .sorted(Map.Entry.comparingByValue()).collect(Collectors.toList());
+        var sport = averages.entrySet().stream().filter(x -> x.getKey().contains("У2")
+                        && !x.getValue().isNaN())
+                .sorted(Map.Entry.comparingByValue()).collect(Collectors.toList());
+        var summary = comfort.stream().map(x -> x.getValue())
+                .reduce(0f, (a,b) -> (a+b));
+        var averageComfort = comfort.stream().map(x -> x.getValue())
+                .reduce(0f, (a,b) -> (a+b)) / comfort.stream().count();
+        var averageSport = sport.stream().map(x -> x.getValue())
+                .reduce(0f, (a,b) -> (a+b)) / sport.stream().count();
+        dataset.setValue("СПОРТ", averageSport);
+        dataset.setValue("КОМФОРТ", averageComfort);
+
         return dataset;
     }
 
     private JFreeChart createChart(PieDataset dataset)
     {
         JFreeChart chart = ChartFactory.createPieChart(
-                "Соотношение полов",  // chart title
+                "Соотношение средних баллов учащихся на СПОРТе и КОМФОРТе",  // chart title
                 dataset,             // data
                 true,               // legend
                 true,                // tooltips
@@ -60,7 +78,7 @@ public class StudentGenderPie extends ApplicationFrame {
         t.setFont(new Font("Arial", Font.BOLD, 26));
 
         // Определение подзаголовка
-        TextTitle source = new TextTitle("Соотношение полов",
+        TextTitle source = new TextTitle("Соотношение средних баллов учащихся на СПОРТе и КОМФОРТе",
                 new Font("Courier New", Font.PLAIN, 14));
         source.setPaint(Color.WHITE);
         source.setPosition(RectangleEdge.BOTTOM);
@@ -73,9 +91,8 @@ public class StudentGenderPie extends ApplicationFrame {
         plot.setOutlineVisible(false);
 
         // Определение секций круговой диаграммы
-        plot.setSectionPaint("Женский" , Color.pink);
-        plot.setSectionPaint("Мужской", Color.blue);
-        plot.setSectionPaint("Боевой вертолёт", Color.black );
+        plot.setSectionPaint("СПОРТ" , Color.red);
+        plot.setSectionPaint("КОМФОРТ", Color.blue);
         plot.setBaseSectionOutlinePaint(Color.WHITE);
         plot.setSectionOutlinesVisible(true);
         plot.setBaseSectionOutlineStroke(new BasicStroke(2.0f));
@@ -99,7 +116,7 @@ public class StudentGenderPie extends ApplicationFrame {
                 new Color[] {c1, c2});
     }
 
-    public JPanel createDemoPanel() throws SQLException {
+    public JPanel createDemoPanel() throws SQLException, ClassNotFoundException {
         JFreeChart chart = createChart(createDataset());
         chart.setPadding(new RectangleInsets(4, 8, 2, 2));
         ChartPanel panel = new ChartPanel(chart);
@@ -111,7 +128,7 @@ public class StudentGenderPie extends ApplicationFrame {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         conn.Conn();
-        StudentGenderPie demo = new StudentGenderPie("Соотношения полов присутствующих на курсе");
+        StudentDifficultiesPie demo = new StudentDifficultiesPie("Соотношение средних баллов учащихся на СПОРТе и КОМФОРТе");
         demo.pack();
         RefineryUtilities.centerFrameOnScreen(demo);
         demo.setVisible(true);

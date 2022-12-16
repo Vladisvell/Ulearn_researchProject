@@ -1,3 +1,7 @@
+package DefaultPackage;
+
+import CSVUtilities.CSVUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,17 +43,17 @@ public class Student extends Person{
 
     public Module findModuleByName(String name){
         for(Module module : modules){
-            if(name.equals(module.name))
+            if(name.equals(module.getName()))
                 return module;
         }
         throw new IllegalArgumentException("Такого модуля не существует!");
     }
 
     public boolean doesModuleExist(String moduleName){
-        return modules.stream().anyMatch(p -> p.name.equals(moduleName));
+        return modules.stream().anyMatch(p -> p.getName().equals(moduleName));
     }
 
     public List<String> getModulesNames(){
-        return modules.stream().map(x -> x.name).collect(Collectors.toList());
+        return modules.stream().map(x -> x.getName()).collect(Collectors.toList());
     }
 }

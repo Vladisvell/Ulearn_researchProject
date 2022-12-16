@@ -1,3 +1,5 @@
+package Vkontakte;
+
 import com.vk.api.sdk.client.Lang;
 import com.vk.api.sdk.client.TransportClient;
 import com.vk.api.sdk.client.VkApiClient;

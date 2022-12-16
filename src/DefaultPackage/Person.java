@@ -1,3 +1,5 @@
+package DefaultPackage;
+
 public class Person {
     private final String name;
     private Gender gender = Gender.UNDEFINED;
@@ -18,15 +20,19 @@ public class Person {
         return String.format("%s", name);
     }
 
-    public void setGender(Gender newGender){
-        this.gender = newGender;
+    public void setGenderByCode(int genderCode){
+        this.gender = Gender.values()[genderCode];
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     public Gender getGender(){
         return this.gender;
     }
 
-    enum Gender{
+    public enum Gender{
         UNDEFINED,
         FEMALE,
         MALE,

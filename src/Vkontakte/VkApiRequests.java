@@ -1,3 +1,7 @@
+package Vkontakte;
+
+import DefaultPackage.Person;
+import DefaultPackage.Student;
 import com.vk.api.sdk.client.Lang;
 import com.vk.api.sdk.client.TransportClient;
 import com.vk.api.sdk.client.VkApiClient;
@@ -5,7 +9,6 @@ import com.vk.api.sdk.client.actors.UserActor;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
-import com.vk.api.sdk.objects.base.Sex;
 import com.vk.api.sdk.objects.users.Fields;
 import com.vk.api.sdk.objects.users.responses.SearchResponse;
 
@@ -19,7 +22,7 @@ public class VkApiRequests {
     private final VkApiClient vk;
     private final UserActor actor;
 
-    VkApiRequests(String credentialsPath){
+    public VkApiRequests(String credentialsPath){
         TransportClient transportClient = new HttpTransportClient();
         VkApiClient vk = new VkApiClient(transportClient);
         Path path = Path.of(credentialsPath);
@@ -47,8 +50,8 @@ public class VkApiRequests {
                         .count(1)
                         .execute();
                 if(request.getItems().size() != 0){
-                    var sex = request.getItems().get(0).getSex();
-                    student.setGender(Person.Gender.valueOf(sex.name()));
+                    var sex = request.getItems().get(0).getSex().ordinal();
+                    student.setGenderByCode(sex);
                 }
             } catch (ApiException e) {
                 throw new RuntimeException(e);
