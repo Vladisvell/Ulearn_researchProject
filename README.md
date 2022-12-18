@@ -9,4 +9,8 @@
 5. Вынести эти данные из базы SQLite
 6. Использовать данные для формирования графиков на основе JFreeChart
 
-
+![Снимок экрана 2022-12-18 233153](https://user-images.githubusercontent.com/73733747/208313653-3f839f49-62e4-4862-9b29-3448d3127367.png)
+![Снимок экрана 2022-12-18 233223](https://user-images.githubusercontent.com/73733747/208313656-7c1e2a55-a413-418b-b56c-278dde2fcedf.png)
+![Снимок экрана 2022-12-18 233245](https://user-images.githubusercontent.com/73733747/208313657-6887f21d-af6f-40c5-959f-9bdbef8692c1.png)
+![Снимок экрана 2022-12-18 233301](https://user-images.githubusercontent.com/73733747/208313659-bcb25518-6e5b-4659-8454-2177d4fcaa3e.png)
+![Снимок экрана 2022-12-18 233316](https://user-images.githubusercontent.com/73733747/208313660-20d2cb1b-fe94-405d-aa33-356fcac99e33.png)
