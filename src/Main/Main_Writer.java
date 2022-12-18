@@ -1,5 +1,7 @@
-package DefaultPackage;
+package Main;
 
+import DefaultPackage.Student;
+import DefaultPackage.conn;
 import Vkontakte.VkApiRequests;
 
 import java.io.IOException;
@@ -14,7 +16,7 @@ public class Main_Writer {
     final public static String CSVPath = "C:\\Users\\Vladislav\\Desktop\\basicprogramming_shadrinEdit.csv";
     public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException, InterruptedException {
         conn.Conn();
-        boolean isVKNeeded = false;
+        boolean isVKNeeded = false; //Определяет, тягать ли данные из VKoнтакте
         conn.WriteDB(isVKNeeded);
         System.out.println("База данных успешно заполнена.");
     }

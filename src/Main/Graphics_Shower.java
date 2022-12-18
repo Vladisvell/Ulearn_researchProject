@@ -1,5 +1,6 @@
-package DefaultPackage;
+package Main;
 
+import DefaultPackage.conn;
 import Graphics.*;
 
 import java.sql.SQLException;

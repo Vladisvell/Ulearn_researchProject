@@ -1,5 +1,7 @@
 package DefaultPackage;
 
+import DefaultPackage.conn;
+
 import java.sql.SQLException;
 
 public class DatabaseLauncher {
