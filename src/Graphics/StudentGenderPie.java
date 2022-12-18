@@ -37,9 +37,9 @@ public class StudentGenderPie extends ApplicationFrame {
     private PieDataset createDataset() throws SQLException {
         DefaultPieDataset dataset = new DefaultPieDataset();
         var sexes = conn.GetSexes();
-        dataset.setValue("Женский" , sexes[0]);
-        dataset.setValue("Мужской", sexes[1]);
-        dataset.setValue("Боевой вертолёт", sexes[2]);
+        dataset.setValue("Женский" , sexes[1]);
+        dataset.setValue("Мужской", sexes[2]);
+        dataset.setValue("Неизвестно/нет данных", sexes[0]);
         return dataset;
     }
 
@@ -78,7 +78,7 @@ public class StudentGenderPie extends ApplicationFrame {
         // Определение секций круговой диаграммы
         plot.setSectionPaint("Женский" , Color.pink);
         plot.setSectionPaint("Мужской", Color.blue);
-        plot.setSectionPaint("Боевой вертолёт", Color.black );
+        plot.setSectionPaint("Неизвестно/нет данных", Color.black );
         plot.setBaseSectionOutlinePaint(Color.WHITE);
         plot.setSectionOutlinesVisible(true);
         plot.setBaseSectionOutlineStroke(new BasicStroke(2.0f));

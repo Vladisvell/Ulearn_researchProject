@@ -30,7 +30,7 @@ public class PracticesAndHomeworksHistogramm extends ApplicationFrame
         final CategoryDataset dataset    = Dataset_creator.createDataset8();
         final JFreeChart      chart      = createChart(dataset);
         final ChartPanel      chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new Dimension(500, 270));
+        chartPanel.setPreferredSize(new Dimension(800, 600));
         setContentPane(chartPanel);
 
     }
@@ -55,6 +55,7 @@ public class PracticesAndHomeworksHistogramm extends ApplicationFrame
         // Скрытие осевых линий и меток делений
         axis.setAxisLineVisible (false);    // осевая линия
         axis.setTickMarksVisible(false);    // метки деления оси
+
         // Наклон меток значений
         //axis.setCategoryLabelPositions(
         //        CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 6)

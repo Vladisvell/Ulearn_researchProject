@@ -8,14 +8,13 @@ import java.util.*;
 
 public class conn {
     private static Connection conn;
-    private static Statement statmt;
-    private static ResultSet    resSet;
+    private static Statement statement;
+    private static ResultSet resSet;
 
     private static List<Student> studentList;
     private static List<String> groups;
     private static HashMap<String, Integer> groupsIDs;
-    private static List<String> moduleNames;
-    private static Student idealWalkthrough;
+    private static Student idealStudent;
 
     public static int[] studentsStats;
 
@@ -25,15 +24,15 @@ public class conn {
         conn = null;
         Class.forName("org.sqlite.JDBC");
         conn = DriverManager.getConnection("jdbc:sqlite:ulearn_statistics.db");
-        statmt = conn.createStatement();
+        statement = conn.createStatement();
 
         System.out.println("База Подключена!");
     }
 
     // --------Создание таблицы--------
-    public static void CreateDB() throws ClassNotFoundException, SQLException
+    public static void CreateDB() throws SQLException
     {
-        statmt = conn.createStatement();
+        statement = conn.createStatement();
         System.out.println("Таблица создана или уже существует.");
     }
 
@@ -54,12 +53,11 @@ public class conn {
         String rawTable = "CREATE TABLE if NOT EXISTS 'Информация о курсе'" +
                 "('id' INTEGER PRIMARY KEY," +
                 "'Практики' float,'ДЗ' float,'Активности' float);";
-        var ech = idealWalkthrough.modules;
         PreparedStatement ptTable = conn.prepareStatement(rawTable);
         ptTable.executeUpdate();
         String rawStatement = "INSERT INTO 'Информация о курсе' ('id','Практики', 'ДЗ','Активности') VALUES (?,?,?,?)";
         PreparedStatement pt = conn.prepareStatement(rawStatement);
-        var modules = idealWalkthrough.modules;
+        var modules = idealStudent.modules;
         for(int i = 1; i < modules.size()+1; i++){
             pt.setInt(1, i);
             pt.setFloat(2, modules.get(i-1).getMaxPracticePoints());
@@ -70,11 +68,10 @@ public class conn {
     }
 
     private static void WriteCourseNames() throws SQLException{
-        statmt.execute("CREATE TABLE if not exists 'Модули' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'Название' text);");
-        var names = idealWalkthrough.getModulesNames();
+        statement.execute("CREATE TABLE if not exists 'Модули' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'Название' text);");
         String rawStatement = "INSERT INTO 'Модули' ('Название') VALUES (?)";
         PreparedStatement pt = conn.prepareStatement(rawStatement);
-        var modules = idealWalkthrough.modules;
+        var modules = idealStudent.modules;
         for (int i = 1; i < modules.size()+1; i++) {
             pt.setString(1, modules.get(i - 1).getName());
             pt.executeUpdate();
@@ -83,7 +80,7 @@ public class conn {
 
     private static void GetStatisticsData() throws InterruptedException {
         studentList = CSVUtils.read();
-        idealWalkthrough = studentList.get(0);
+        idealStudent = studentList.get(0);
         studentList = studentList.subList(1,studentList.size()-1);
         studentList = Main_Writer.GetFullData(studentList);
         groups = StudentUtilities.GetAllGroups(studentList);
@@ -94,10 +91,9 @@ public class conn {
     }
 
     private static void WritePeople() throws SQLException{
-        statmt.execute("CREATE TABLE if not exists 'Люди' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'Имя' text, 'Пол');");
+        statement.execute("CREATE TABLE if not exists 'Люди' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'Имя' text, 'Пол');");
         for(Student student: studentList){
             var studName = student.getName();
-            var group = student.getGroup();
             var sex = student.getGender().ordinal();
             String raw = "INSERT INTO 'Люди' ('Имя', 'Пол') VALUES (?,?)";
             PreparedStatement pt = conn.prepareStatement(raw);
@@ -108,7 +104,7 @@ public class conn {
     }
 
     private static void WriteSex() throws  SQLException{
-        statmt.execute("CREATE TABLE if not exists 'Полы' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'Пол' text);");
+        statement.execute("CREATE TABLE if not exists 'Полы' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'Пол' text);");
         String raw = "INSERT INTO 'Полы' ('Пол') VALUES (?)";
         PreparedStatement pt = conn.prepareStatement(raw);
         pt.setString(1, "Неопределено");
@@ -120,7 +116,7 @@ public class conn {
     }
 
     private static void WriteGroups() throws SQLException{
-        statmt.execute("CREATE TABLE if not exists 'Группы' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'Группа' text);");
+        statement.execute("CREATE TABLE if not exists 'Группы' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'Группа' text);");
         String raw = "INSERT INTO 'Группы' ('Группа') VALUES (?)";
         PreparedStatement pt = conn.prepareStatement(raw);
         if (groups == null)
@@ -131,9 +127,8 @@ public class conn {
         }
     }
     private static void WriteUsers() throws SQLException{
-        statmt.execute("CREATE TABLE if not exists 'Студенты' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'Группа' int);");
+        statement.execute("CREATE TABLE if not exists 'Студенты' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'Группа' int);");
         for(Student student: studentList){
-            var studName = student.getName();
             var group = student.getGroup();
             String raw = "INSERT INTO 'Студенты' ('Группа') VALUES (?)";
             PreparedStatement pt = conn.prepareStatement(raw);
@@ -146,9 +141,9 @@ public class conn {
     private static void WriteAllCourses() throws SQLException{
         if(studentList == null)
             studentList = CSVUtils.read();
-        idealWalkthrough = studentList.get(0);
+        idealStudent = studentList.get(0);
         studentList = studentList.subList(1,studentList.size()-1);
-        moduleNames = studentList.get(0).getModulesNames();
+        List<String> moduleNames = studentList.get(0).getModulesNames();
         for(String moduleName : moduleNames){
             WriteModule(moduleName);
         }
@@ -168,7 +163,6 @@ public class conn {
 
         for(Student student: studentList){
             var module = student.findModuleByName(moduleName);
-            var studName = student.getName();
             String raw = String.format("INSERT INTO '%s' ('Практики','ДЗ','Активности') VALUES (?,?,?)",moduleName);
             PreparedStatement pt = conn.prepareStatement(raw);
             //pt.setString(1,moduleName);
@@ -180,7 +174,7 @@ public class conn {
     }
 
     // -------- Вывод таблицы--------
-    public static void ReadDB() throws ClassNotFoundException, SQLException
+    public static void ReadDB() throws SQLException
     {
         //GetContainingFromInput();
         GetProgresses();
@@ -191,11 +185,11 @@ public class conn {
         if(studentsStats != null)
             return studentsStats;
         int[] stats = new int[]{0,0,0,0,0};
-        resSet = statmt.executeQuery("SELECT * from 'Информация о курсе'");
+        resSet = statement.executeQuery("SELECT * from 'Информация о курсе'");
         resSet.next();
         float maxPoints = resSet.getFloat("Практики") + resSet.getFloat("ДЗ");
         float onePercent = maxPoints / 100;
-        resSet = statmt.executeQuery("Select * from 'За весь курс'");
+        resSet = statement.executeQuery("Select * from 'За весь курс'");
         while(resSet.next()){
             float currPoints = resSet.getFloat("Практики") + resSet.getFloat("ДЗ");
             if(currPoints / onePercent < 20)
@@ -213,7 +207,7 @@ public class conn {
         return stats;
     }
     public static HashMap<String, Float> GetAverageScores() throws SQLException {
-        resSet = statmt.executeQuery("SELECT * FROM 'Группы'");
+        resSet = statement.executeQuery("SELECT * FROM 'Группы'");
         HashMap<Integer, Float> averageScoresInGroups = new HashMap<>();
         HashMap<Integer, Integer> studentsCountInGroups = new HashMap<>();
         HashMap<Integer, String> groups = new HashMap<>();
@@ -223,11 +217,11 @@ public class conn {
             studentsCountInGroups.put(resSet.getInt("id"), 0);
         }
         HashMap<Integer, Integer> studGroups = new HashMap<>();
-        resSet = statmt.executeQuery("SELECT * FROM 'Студенты'");
+        resSet = statement.executeQuery("SELECT * FROM 'Студенты'");
         while(resSet.next()){
             studGroups.put(resSet.getInt("id"), resSet.getInt("Группа"));
         }
-        resSet = statmt.executeQuery("SELECT * FROM 'За весь курс'");
+        resSet = statement.executeQuery("SELECT * FROM 'За весь курс'");
         while(resSet.next()){
             Integer studId = resSet.getInt("id");
             float total = resSet.getFloat("Практики") + resSet.getFloat("ДЗ");
@@ -246,7 +240,7 @@ public class conn {
 
     public static float[] GetAveragesFromModule(String moduleName) throws SQLException{
         String rawStatmt = String.format("SELECT * FROM '%s'", moduleName);
-        resSet = statmt.executeQuery(rawStatmt);
+        resSet = statement.executeQuery(rawStatmt);
         float[] stats = new float[]{0,0,0};
         int counter = 0;
         while (resSet.next()){
@@ -262,15 +256,13 @@ public class conn {
     }
 
     public static LinkedHashMap<String, Float> GetAveragesFromAllModules() throws SQLException{
-        resSet = statmt.executeQuery("Select * from Модули");
+        resSet = statement.executeQuery("Select * from Модули");
         List<String> names = new ArrayList<>();
         LinkedHashMap<String, Float> averagesFromAllModules = new LinkedHashMap<>();
         while(resSet.next()){
             names.add(resSet.getString("Название"));
         }
-        var counter = 0;
-        for(var name: names){
-            String moduleName = name;
+        for(var moduleName: names){
             float[] averages = GetAveragesFromModule(moduleName);
             float score = averages[0] + averages[1] + averages[2];
             averagesFromAllModules.put(moduleName, score);
@@ -279,14 +271,14 @@ public class conn {
     }
 
     public static LinkedHashMap<String, Float> GetIdealFromAllModules() throws SQLException{
-        resSet = statmt.executeQuery("Select * from Модули");
+        resSet = statement.executeQuery("Select * from Модули");
         List<String> names = new ArrayList<>();
         LinkedHashMap<String, Float> averagesFromAllModules = new LinkedHashMap<>();
         while(resSet.next()){
             names.add(resSet.getString("Название"));
         }
         var counter = 0;
-        resSet = statmt.executeQuery("Select * from 'Информация о курсе'");
+        resSet = statement.executeQuery("Select * from 'Информация о курсе'");
         while(resSet.next()){
             String moduleName = names.get(counter);
             float score = resSet.getFloat("Практики") + resSet.getFloat("ДЗ");
@@ -297,7 +289,7 @@ public class conn {
     }
 
     public static float[] GetIdealScores() throws SQLException{
-        resSet = statmt.executeQuery("SELECT * FROM 'Информация о курсе'");
+        resSet = statement.executeQuery("SELECT * FROM 'Информация о курсе'");
         float[] stats = new float[]{0,0,0};
         stats[0] = resSet.getFloat("Практики");
         stats[1] = resSet.getFloat("ДЗ");
@@ -306,7 +298,7 @@ public class conn {
     }
 
     public static int[] GetSexes() throws SQLException{
-        resSet = statmt.executeQuery("SELECT * FROM 'Люди'");
+        resSet = statement.executeQuery("SELECT * FROM 'Люди'");
         int[] sexes = new int[]{0,0,0};
         while(resSet.next()){
             var sexID = resSet.getInt("Пол");
@@ -315,10 +307,10 @@ public class conn {
         return sexes;
     }
     // --------Закрытие--------
-    public static void CloseDB() throws ClassNotFoundException, SQLException
+    public static void CloseDB() throws SQLException
     {
         conn.close();
-        statmt.close();
+        statement.close();
         resSet.close();
 
         System.out.println("Соединения закрыты");

@@ -1,6 +1,4 @@
 package Graphics;
-
-import DefaultPackage.DatabaseLauncher;
 import DefaultPackage.conn;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -30,14 +28,14 @@ public class StudentProgressPie extends ApplicationFrame {
         ChartFactory.setChartTheme(new StandardChartTheme("JFree/Shadow", true));
     }
 
-    public StudentProgressPie(String title) {
+    public StudentProgressPie(String title) throws SQLException {
         super(title);
         setContentPane(createDemoPanel());
     }
 
-    private PieDataset createDataset() {
+    private PieDataset createDataset() throws SQLException {
         DefaultPieDataset dataset = new DefaultPieDataset();
-        var data = conn.studentsStats;
+        var data = conn.GetProgresses();
         dataset.setValue("0-20%" , data[0]);
         dataset.setValue("20-40%", data[1]);
         dataset.setValue("40%-60%", data[2]);
@@ -117,7 +115,7 @@ public class StudentProgressPie extends ApplicationFrame {
                 new Color[] {c1, c2});
     }
 
-    public JPanel createDemoPanel() {
+    public JPanel createDemoPanel() throws SQLException {
         JFreeChart chart = createChart(createDataset());
         chart.setPadding(new RectangleInsets(4, 8, 2, 2));
         ChartPanel panel = new ChartPanel(chart);

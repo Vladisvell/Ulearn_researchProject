@@ -78,8 +78,7 @@ public class Module {
     }
 
     public List<String> getFormattedTasks(){
-        List<String> formatted = tasks.stream().map(x -> x.toString()).toList();
-        return formatted;
+        return tasks.stream().map(x -> x.toString()).toList();
     }
 
     private String tasksToString(List<String> formattedTasks){
