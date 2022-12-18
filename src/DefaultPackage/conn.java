@@ -37,8 +37,8 @@ public class conn {
     }
 
     // --------Заполнение таблицы--------
-    public static void WriteDB() throws SQLException, InterruptedException {
-        GetStatisticsData();
+    public static void WriteDB(boolean isVKNeeded) throws SQLException, InterruptedException {
+        GetStatisticsData(isVKNeeded);
         WriteIdeal();
         WriteGroups();
         WriteSex();
@@ -78,11 +78,12 @@ public class conn {
         }
     }
 
-    private static void GetStatisticsData() throws InterruptedException {
+    private static void GetStatisticsData(boolean isVKNeeded) throws InterruptedException {
         studentList = CSVUtils.read();
         idealStudent = studentList.get(0);
         studentList = studentList.subList(1,studentList.size()-1);
-        studentList = Main_Writer.GetFullData(studentList);
+        if(isVKNeeded)
+            studentList = Main_Writer.GetFullData(studentList);
         groups = StudentUtilities.GetAllGroups(studentList);
         groupsIDs = new HashMap<>();
         for(int i = 0; i < groups.size(); i++){

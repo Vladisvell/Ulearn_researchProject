@@ -16,8 +16,9 @@ public class CSVUtils {
     public static List<Student> read(){
         //System.out.println("Введите полное имя файла или локальное имя");
         //Path path = Path.of(new Scanner(System.in).nextLine());
-        Path path = Path.of("C:\\Users\\Vladislav\\Desktop\\basicprogramming_shadrinEdit.csv");
+        //Path path = Path.of("C:\\Users\\Vladislav\\Desktop\\basicprogramming_shadrinEdit.csv");
         //Path path = Path.of("C:\\Users\\Vladislav\\Desktop\\basicprogramming_2.csv");
+        Path path = Path.of(Main_Writer.CSVPath);
         List<String[]> data = new ArrayList<>();
         try {
             //data = Files.readAllLines(path, StandardCharsets.UTF_8).stream().map(line -> line.split(";", -1)).toList();
