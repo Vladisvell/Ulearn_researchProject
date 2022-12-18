@@ -28,7 +28,7 @@ public class ComfortProgressHistogramm extends ApplicationFrame
     public ComfortProgressHistogramm(final String title) throws SQLException, ClassNotFoundException {
         super(title);
 
-        final CategoryDataset dataset    = Dataset_creator.createDataset7();
+        final CategoryDataset dataset    = Dataset_creator.createComfortProgressDataset();
         final JFreeChart      chart      = createChart(dataset);
         final ChartPanel      chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new Dimension(800, 600));

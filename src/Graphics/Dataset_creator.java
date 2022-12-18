@@ -2,10 +2,8 @@ package Graphics;
 
 import DefaultPackage.DatabaseLauncher;
 import DefaultPackage.conn;
-import DefaultPackage.*;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.DatasetUtilities;
 
 import java.sql.SQLException;
 import java.util.Collections;
@@ -21,7 +19,7 @@ public class Dataset_creator
              {41.0, 33.0, 22.0, 34.0, 62.0, 32.0, 42.0, 34.0}
     };
 
-    public static CategoryDataset createDataset4() throws SQLException, ClassNotFoundException {
+    public static CategoryDataset createProgressDataset() throws SQLException, ClassNotFoundException {
         DefaultCategoryDataset result = new DefaultCategoryDataset();
         DatabaseLauncher.main(null);
         var set = conn.GetProgresses();
@@ -33,11 +31,10 @@ public class Dataset_creator
         return result;
     }
 
-    public static CategoryDataset createDataset5() throws SQLException, ClassNotFoundException {
+    public static CategoryDataset createInGroupProgressDataset() throws SQLException, ClassNotFoundException {
         conn.Conn();
         DefaultCategoryDataset result = new DefaultCategoryDataset();
 
-        //TODO: отсортировать это
         var averages = conn.GetAverageScores();
         LinkedHashMap<String, Float> linked = new LinkedHashMap<>();
         var entries = averages.entrySet().stream()
@@ -51,7 +48,7 @@ public class Dataset_creator
     }
 
 
-    public static CategoryDataset createDataset6() throws SQLException, ClassNotFoundException {
+    public static CategoryDataset createSportProgressDataset() throws SQLException, ClassNotFoundException {
         conn.Conn();
         DefaultCategoryDataset result = new DefaultCategoryDataset();
 
@@ -67,7 +64,7 @@ public class Dataset_creator
         return result;
     }
 
-    public static CategoryDataset createDataset7() throws SQLException, ClassNotFoundException {
+    public static CategoryDataset createComfortProgressDataset() throws SQLException, ClassNotFoundException {
         conn.Conn();
         DefaultCategoryDataset result = new DefaultCategoryDataset();
 
@@ -83,7 +80,7 @@ public class Dataset_creator
         return result;
     }
 
-    public static CategoryDataset createDataset8() throws SQLException, ClassNotFoundException{
+    public static CategoryDataset createHomeAndPracDataset() throws SQLException, ClassNotFoundException{
         conn.Conn();
         DefaultCategoryDataset result = new DefaultCategoryDataset();
         var averages = conn.GetAveragesFromModule("За весь курс");
@@ -97,7 +94,7 @@ public class Dataset_creator
         return result;
     }
 
-    public static CategoryDataset createDataset9() throws SQLException, ClassNotFoundException {
+    public static CategoryDataset createCompletionProgressDataset() throws SQLException, ClassNotFoundException {
         conn.Conn();
         DefaultCategoryDataset result = new DefaultCategoryDataset();
         var averages = conn.GetAveragesFromAllModules();

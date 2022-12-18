@@ -27,7 +27,7 @@ public class PracticesAndHomeworksHistogramm extends ApplicationFrame
     public PracticesAndHomeworksHistogramm(final String title) throws SQLException, ClassNotFoundException {
         super(title);
 
-        final CategoryDataset dataset    = Dataset_creator.createDataset8();
+        final CategoryDataset dataset    = Dataset_creator.createHomeAndPracDataset();
         final JFreeChart      chart      = createChart(dataset);
         final ChartPanel      chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new Dimension(800, 600));

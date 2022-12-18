@@ -28,7 +28,7 @@ public class SportProgressHistogramm extends ApplicationFrame
     public SportProgressHistogramm(final String title) throws SQLException, ClassNotFoundException {
         super(title);
 
-        final CategoryDataset dataset    = Dataset_creator.createDataset6();
+        final CategoryDataset dataset    = Dataset_creator.createSportProgressDataset();
         final JFreeChart      chart      = createChart(dataset);
         final ChartPanel      chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new Dimension(800, 600));

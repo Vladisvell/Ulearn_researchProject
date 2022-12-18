@@ -28,7 +28,7 @@ public class Groups_ProgressHistogramm extends ApplicationFrame
     public Groups_ProgressHistogramm(final String title) throws SQLException, ClassNotFoundException {
         super(title);
 
-        final CategoryDataset dataset    = Dataset_creator.createDataset5();
+        final CategoryDataset dataset    = Dataset_creator.createInGroupProgressDataset();
         final JFreeChart      chart      = createChart(dataset);
         final ChartPanel      chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new Dimension(800, 600));

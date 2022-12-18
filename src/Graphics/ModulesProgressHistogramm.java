@@ -28,7 +28,7 @@ public class ModulesProgressHistogramm extends ApplicationFrame
     public ModulesProgressHistogramm(final String title) throws SQLException, ClassNotFoundException {
         super(title);
 
-        final CategoryDataset dataset    = Dataset_creator.createDataset9();
+        final CategoryDataset dataset    = Dataset_creator.createCompletionProgressDataset();
         final JFreeChart      chart      = createChart(dataset);
         final ChartPanel      chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new Dimension(500, 270));
